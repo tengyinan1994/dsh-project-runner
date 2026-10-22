@@ -50,6 +50,14 @@ The defaults are usually fine. To change the shell, its flags, or the log retent
 - The child shell inherits your full environment by default, like a real terminal; set
   `inheritEnv: scrubbed` if you do not want `*_KEY`-style variables passed through.
 
+## Platform
+
+macOS, Linux and Windows. The shell is detected automatically — `$SHELL` / zsh / bash / sh on
+macOS and Linux, `pwsh` → `powershell` → `cmd.exe` on Windows — and the launch flags follow the
+detected shell (`-lic` for bash/zsh, `/d /s /c` for cmd, `-NoLogo -Command` for PowerShell).
+Windows works through these defaults but has not been exercised on real Windows hardware, so bug
+reports are welcome.
+
 ## License
 
 MIT

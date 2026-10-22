@@ -47,6 +47,13 @@ dsh plugin --profile desktop add github:tengyinan1994/dsh-project-runner
 - 子进程默认继承你的完整环境变量（和真终端一样）；不想把 `*_KEY` 之类传进去，
   把 `inheritEnv` 设为 `scrubbed`。
 
+## 支持平台
+
+macOS、Linux、Windows。shell 自动探测——macOS/Linux 走 `$SHELL` / zsh / bash / sh，Windows 走
+`pwsh` → `powershell` → `cmd.exe`——启动参数跟着 shell 走（bash/zsh 用 `-lic`，cmd 用 `/d /s /c`，
+PowerShell 用 `-NoLogo -Command`）。Windows 是通过这些默认值支持的，但**没有在真机上实测过**，
+遇到问题欢迎提 issue。
+
 ## License
 
 MIT

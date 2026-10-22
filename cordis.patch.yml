@@ -9,18 +9,22 @@
     - id: launcher
       name: dsh-project-runner
       config:
-        # 启动项用什么 shell 跑。默认取本机 zsh（macOS）；缺失时按
-        # $SHELL → /bin/zsh → /bin/bash → /bin/sh 顺序回退。留空即用默认。
+        # 启动项用什么 shell 跑。留空 = 自动探测：
+        #   macOS/Linux：$SHELL → /bin/zsh → /bin/bash → /bin/sh
+        #   Windows：pwsh → powershell → %COMSPEC%（cmd.exe，一定有）
         # shellPath: /bin/zsh
         # 追加在 shellPath 之后的参数，最后一项由插件补上命令行本身。
+        # **留空 = 按 shell 类型自动推导**（跨平台的关键，cmd/PowerShell 不认 -lic）：
+        #   bash/zsh → -lic   cmd.exe → /d /s /c   pwsh/powershell → -NoLogo -Command
+        # 手写则完全按你给的来。
         # -lic = 登录 + 交互 + 执行命令，等价于 VSCode 终端里敲这条命令的效果：
         # ~/.zprofile 与 ~/.zshrc 都会加载，PATH / nvm / pyenv / gitstatus 等都在。
         # 代价：-lic 的首字节会慢一些（要读一遍登录配置；配置越重越慢，
         # 实测 .zshrc 较重时 ~1.6–2.4s，轻量配置 ~0.2s），-lc 则跳过 .zshrc，
         # 只写在 .zshrc 里的 PATH（nvm/pyenv 等）就没了。面板会显示每次运行的
         # 「首字节」耗时，觉得启动慢就把这里换成 -lc（或 -c，最快、不读任何配置）。
-        shellArgs:
-          - -lic
+        # shellArgs:
+        #   - -lic
         # 同时保留的运行实例上限（所有分组共享这一个额度）。
         maxRuns: 12
         # 单个实例保留的日志字符数上限，超出后从头丢弃（尾部始终保留）。

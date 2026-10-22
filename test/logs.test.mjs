@@ -214,3 +214,18 @@ test('保留期清理与总量清理互补：先按天，再按量', async () =>
   const budget = await enforceLogBudget(dir, 10 * 1024 * 1024)
   assert.deepEqual(budget.removedFiles, [], '剩下的没过量就不动')
 })
+
+test('Windows 保留设备名与末尾点/空格不能当文件名', () => {
+  // 这些名字在 Windows 上是设备名，直接做文件名会写入失败
+  assert.equal(safeName('aux'), '_aux')
+  assert.equal(safeName('CON'), '_CON')
+  assert.equal(safeName('com1'), '_com1')
+  assert.equal(safeName('lpt9'), '_lpt9')
+  // 只是以这些字母开头的名字是正常名字
+  assert.equal(safeName('console'), 'console')
+  assert.equal(safeName('auxiliary'), 'auxiliary')
+  // Windows 上文件名不能以点或空格结尾
+  assert.equal(safeName('demo.'), 'demo')
+  assert.equal(safeName('demo   '), 'demo')
+  assert.ok(!safeName(`${'a'.repeat(47)}.`).endsWith('.'))
+})

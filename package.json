@@ -1,6 +1,6 @@
 {
   "name": "dsh-project-runner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Grouped run panel for DeepSeek Harness: one click starts a project's services in a real PTY, streams live colored output, and keeps every run's log on disk where the agent can read it.",
   "keywords": [
     "dsh",
