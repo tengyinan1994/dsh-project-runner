@@ -1,0 +1,64 @@
+{
+  "name": "dsh-project-runner",
+  "version": "0.1.0",
+  "description": "Grouped run panel for DeepSeek Harness: one click starts a project's services in a real PTY, streams live colored output, and keeps every run's log on disk where the agent can read it.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "run",
+    "runner",
+    "launcher",
+    "dev-server",
+    "terminal",
+    "pty",
+    "logs",
+    "启动器",
+    "运行"
+  ],
+  "license": "MIT",
+  "author": "tengyinan",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib/**/*.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "LICENSE",
+    "README.md",
+    "README.zh.md"
+  ],
+  "engines": {
+    "dsh": ">=0.2.1-rc.2"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tengyinan1994/dsh-project-runner.git"
+  },
+  "homepage": "https://github.com/tengyinan1994/dsh-project-runner#readme",
+  "bugs": {
+    "url": "https://github.com/tengyinan1994/dsh-project-runner/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  }
+}

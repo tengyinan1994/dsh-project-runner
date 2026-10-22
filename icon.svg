@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Project Runner">
+  <defs>
+    <linearGradient id="pr-bg" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5B7CFA"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#pr-bg)"/>
+  <!-- 播放三角：点一下就跑 -->
+  <path d="M17.5 19.5 33 32 17.5 44.5Z" fill="#fff" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>
+  <!-- 三行输出：跑的是一个清单，不是单条命令 -->
+  <rect x="38" y="19.6" width="12.5" height="4.2" rx="2.1" fill="#fff" opacity="0.95"/>
+  <rect x="38" y="29.9" width="12.5" height="4.2" rx="2.1" fill="#fff" opacity="0.8"/>
+  <rect x="38" y="40.2" width="8" height="4.2" rx="2.1" fill="#fff" opacity="0.62"/>
+</svg>

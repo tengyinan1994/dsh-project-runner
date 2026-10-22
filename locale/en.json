@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Project Runner",
+    "description": "Grouped run panel: start a project's services in a real PTY, watch live colored output, keep each run's log on disk for the agent to read."
+  }
+}

@@ -1,0 +1,55 @@
+# Bundle patch for dsh-project-runner.
+#
+# Applied automatically when the package is named in the profile's
+# `dsh.profile.bundles` list, so installing the plugin needs no second edit to
+# the profile's own cordis.patch.yml. Override any of these fields there by
+# targeting the `launcher` row id — a patch replaces the whole `config` object
+# rather than merging into it, so restate every field you want to keep.
+- insert:
+    - id: launcher
+      name: dsh-project-runner
+      config:
+        # 启动项用什么 shell 跑。默认取本机 zsh（macOS）；缺失时按
+        # $SHELL → /bin/zsh → /bin/bash → /bin/sh 顺序回退。留空即用默认。
+        # shellPath: /bin/zsh
+        # 追加在 shellPath 之后的参数，最后一项由插件补上命令行本身。
+        # -lic = 登录 + 交互 + 执行命令，等价于 VSCode 终端里敲这条命令的效果：
+        # ~/.zprofile 与 ~/.zshrc 都会加载，PATH / nvm / pyenv / gitstatus 等都在。
+        # 代价：-lic 的首字节会慢一些（要读一遍登录配置；配置越重越慢，
+        # 实测 .zshrc 较重时 ~1.6–2.4s，轻量配置 ~0.2s），-lc 则跳过 .zshrc，
+        # 只写在 .zshrc 里的 PATH（nvm/pyenv 等）就没了。面板会显示每次运行的
+        # 「首字节」耗时，觉得启动慢就把这里换成 -lc（或 -c，最快、不读任何配置）。
+        shellArgs:
+          - -lic
+        # 同时保留的运行实例上限（所有分组共享这一个额度）。
+        maxRuns: 12
+        # 单个实例保留的日志字符数上限，超出后从头丢弃（尾部始终保留）。
+        logMaxChars: 400000
+        # 停止时先发 SIGINT（等于 Ctrl+C），超过这个毫秒数还没退出就整棵进程树 terminate。
+        stopGraceMs: 3000
+        # 子进程环境：
+        #   full    = 像真终端一样继承你当前 shell 的全部环境变量
+        #             （DSH 的 subprocess 层默认会剔除 *KEY*/*TOKEN*/*SECRET*
+        #             这类敏感名，full 会显式带回去，否则前端项目拿不到自己的
+        #             VITE_*_KEY 之类变量）
+        #   scrubbed = 只保留非敏感变量，与内置终端的安全姿态一致
+        inheritEnv: full
+        # PTY 尺寸：影响 npm/maven 等按宽度换行的输出。
+        cols: 160
+        rows: 40
+        # 启动项清单存在哪里。留空 = $DSH_HOME/launcher/items.json。
+        # 面板里的增删改都会写这个文件；直接编辑它同样生效（打开面板时重读）。
+        # 目录名仍用 launcher/：这是数据位置，与包名解耦，改名不会丢已有清单。
+        # 上一版的 $DSH_HOME/launcher-projects.json（项目列表）会在首次启动时
+        # 一次性迁移成分组，旧文件保留不动。
+        # storeFile: /path/to/items.json
+        # 运行日志落盘目录。留空 = $DSH_HOME/launcher/logs/<日期>/<分组>__<条目>__<runN>.log。
+        # 落盘的意义：DSH 重启后还能回看，agent 工具也能直接读文件。
+        # logDir: /path/to/logs
+        # 日志保留天数（按日期目录整目录清理）。清理时机：插件挂载时 + 每个实例启动时。
+        logRetentionDays: 7
+        # 日志总量上限（默认 512MB）：超过就把最旧的删到线下。
+        # 只按天数保留挡不住「某天起二十个实例」这种堆法，所以要有一道按总量的闸。
+        logMaxTotalBytes: 536870912
+        # 单个日志文件上限，超过后只停止落盘（面板里仍能看完整环形缓冲）。
+        logFileMaxBytes: 20971520
